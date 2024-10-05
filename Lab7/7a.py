@@ -5,8 +5,6 @@
 # Keane Kouchi
 # 9/27/24
 
-UserInput = input("Enter a number: ")
-
 for Number in range(1,11):
     if Number == 5:
         continue
