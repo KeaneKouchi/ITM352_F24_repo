@@ -1,0 +1,68 @@
+{
+    "State Capitals": {
+        "What is the capital of California?": {
+            "alternatives": ["Sacramento", "Los Angeles", "San Francisco", "San Diego"],
+            "explanation": "Sacramento has been the capital of California since 1854."
+        },
+        "What is the capital of Texas?": {
+            "alternatives": ["Austin", "Dallas", "Houston", "San Antonio"],
+            "explanation": "Austin became the capital of Texas in 1839."
+        },
+        "What is the capital of New York?": {
+            "alternatives": ["Albany", "New York City", "Buffalo", "Rochester"],
+            "explanation": "Albany was designated as the capital of New York in 1797."
+        },
+        "What is the capital of Florida?": {
+            "alternatives": ["Tallahassee", "Miami", "Orlando", "Jacksonville"],
+            "explanation": "Tallahassee has been the capital of Florida since 1824."
+        },
+        "What is the capital of Hawaii?": {
+            "alternatives": ["Honolulu", "Waimea", "Pearl City", "Kona"],
+            "explanation": "Honolulu is the capital of Hawaii and the largest city in the state."
+        }
+    },
+    "NFL Trivia": {
+        "Which team won the Super Bowl in 2020?": {
+            "alternatives": ["Kansas City Chiefs", "San Francisco 49ers", "New England Patriots", "Seattle Seahawks"],
+            "explanation": "The Kansas City Chiefs won Super Bowl LIV on February 2, 2020."
+        },
+        "Who is most commonly known as the 'G.O.A.T.' of the NFL?": {
+            "alternatives": ["Tom Brady", "Joe Montana", "Peyton Manning", "Johnny Unitas"],
+            "explanation": "Tom Brady is widely regarded as the 'Greatest of All Time' due to his numerous Super Bowl wins."
+        },
+        "Which team has the most Super Bowl wins?": {
+            "alternatives": ["Pittsburgh Steelers", "New England Patriots", "Dallas Cowboys", "San Francisco 49ers"],
+            "explanation": "The Pittsburgh Steelers have 6 Super Bowl wins."
+        },
+        "Who holds the record for the most career touchdown passes?": {
+            "alternatives": ["Tom Brady", "Drew Brees", "Peyton Manning", "Brett Favre"],
+            "explanation": "Tom Brady holds the record for the most career touchdown passes in NFL history."
+        },
+        "What year was the NFL founded?": {
+            "alternatives": ["1920", "1933", "1945", "1950"],
+            "explanation": "The NFL was founded in 1920."
+        }
+    },
+    "Mixed: State Capitals and NFL Trivia": {
+        "What is the capital of California?": {
+            "alternatives": ["Sacramento", "Los Angeles", "San Francisco", "San Diego"],
+            "explanation": "Sacramento has been the capital of California since 1854."
+        },
+        "What is the capital of Texas?": {
+            "alternatives": ["Austin", "Dallas", "Houston", "San Antonio"],
+            "explanation": "Austin became the capital of Texas in 1839."
+        },
+        "Which team won the Super Bowl in 2020?": {
+            "alternatives": ["Kansas City Chiefs", "San Francisco 49ers", "New England Patriots", "Seattle Seahawks"],
+            "explanation": "The Kansas City Chiefs won Super Bowl LIV on February 2, 2020."
+        },
+        "Who is most commonly known as the 'G.O.A.T.' of the NFL?": {
+            "alternatives": ["Tom Brady", "Joe Montana", "Peyton Manning", "Johnny Unitas"],
+            "explanation": "Tom Brady is widely regarded as the 'Greatest of All Time' due to his numerous Super Bowl wins."
+        },
+        "What is the capital of New York?": {
+            "alternatives": ["Albany", "New York City", "Buffalo", "Rochester"],
+            "explanation": "Albany was designated as the capital of New York in 1797."
+        }
+    }
+}
