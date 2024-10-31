@@ -1,0 +1,53 @@
+{
+    "DashboardMenu": [
+        {
+            "item": "Show the first n rows of sales data",
+            "function": "One_ShowFirstNRows"
+        },
+        {
+            "item": "Total sales by region and order type",
+            "function": "Two_TotalSales_Region_OrderType"
+        },
+        {
+            "item": "Average sales by region with average sales by state and sale type",
+            "function": "Three_AverageSales_Region_State_OrderType"
+        },
+        {
+            "item": "Sales by customer type and order type by state",
+            "function": "Four_Sales_CustomerType_OrderType_State"
+        },
+        {
+            "item": "Total sales and quantity by region and product",
+            "function": "Five_TotalSales_Quantity_Region_ProduceName"
+        },
+        {
+            "item": "Total sales and quantity by customer type",
+            "function": "Six_TotalSales_Quantity_OrderType_CustomerType"
+        },
+        {
+            "item": "Max and min sales price of sales by category",
+            "function": "Seven_Max_Min_Sales_Category"
+        },
+        {
+            "item": "Number of unique employees by region",
+            "function": "Eight_Employees_Region"
+        },
+        {
+            "item": "Create a custom pivot table",
+            "function": "Nine_CustomPivotTable"
+        },
+        {
+            "item": "Median sales price by state",
+            "function": "Ten_MedianSalePrice_State"
+        },
+        {
+            "item": "Change the range of dates",
+            "function": "Eleven_ChangeDateRange"
+        },
+        {
+            "item": "Exit",
+            "function": "ExitProgram"
+        }
+    ]
+}
+
