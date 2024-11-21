@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category }} Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-container">
+            {% if error %}
+            <div class="error-message incorrect">
+                {{ error }}
+            </div>
+            {% endif %}
+            <h2>{{ question }}</h2>
+            <form method="POST" onsubmit="return validateForm()">
+                <ul class="alternatives">
+                    {% for idx, alternative in labeled_answers %}
+                    <li {% if answer_status %}
+                        {% if idx == correct_index %}
+                            class="correct"
+                        {% elif idx == selected_index %}
+                            class="incorrect"
+                        {% endif %}
+                        {% endif %}>
+                        <input type="radio" name="answer" value="{{ idx }}" id="answer-{{ idx }}" {% if answer_status %}disabled{% endif %}>
+                        <label for="answer-{{ idx }}">{{ alternative }}</label>
+                    </li>
+                    {% endfor %}
+                    {% if not answer_status and not used_hint %}
+                    <li>
+                        <input type="radio" name="answer" value="50" id="hint">
+                        <label for="hint">50/50 Hint</label>
+                    </li>
+                    {% endif %}
+                </ul>
+                {% if answer_status %}
+                <input type="hidden" name="answer_status" value="true">
+                {% endif %}
+                <button type="submit">{% if answer_status %}Next Question{% else %}Submit Answer{% endif %}</button>
+            </form>
+            {% if explanation %}
+            <div class="explanation">
+                <h3>Explanation:</h3>
+                <p>{{ explanation }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+<script>
+function validateForm() {
+    if (document.querySelector('input[name="answer_status"]')) {
+        return true;
+    }
+    
+    var radios = document.getElementsByName('answer');
+    var formValid = false;
+
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            formValid = true;
+            break;
+        }
+    }
+
+    if (!formValid) {
+        alert('Please select an answer');
+        return false;
+    }
+
+    return true;
+}
+</script>

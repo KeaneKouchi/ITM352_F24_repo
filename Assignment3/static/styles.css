@@ -1,0 +1,260 @@
+/* Basic reset to remove default padding and margins */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #0044cc;
+}
+
+h3 {
+    margin-bottom: 10px;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+/* Category and Quiz Layout */
+.category-list {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.category-list li {
+    background-color: #0044cc;
+    padding: 15px 30px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.category-list li:hover {
+    background-color: #0033aa;
+}
+
+.quiz-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-container h3 {
+    margin-bottom: 20px;
+}
+
+.alternatives {
+    list-style-type: none;
+    padding: 0;
+}
+
+.alternatives li {
+    background-color: #eeeeee;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.alternatives li:hover {
+    background-color: #dddddd;
+}
+
+button {
+    background-color: #0044cc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #0033aa;
+}
+  .error-message {
+      margin-bottom: 20px;
+  }
+
+  /* Add these new styles */
+  .error-message.correct {
+      color: #2ecc71;
+      font-size: 24px;
+      font-weight: bold;
+  }
+
+  .error-message.incorrect {
+      color: red;
+      font-size: 24px;
+      font-weight: bold;
+  }
+.explanation {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #666;
+}
+
+.result-container {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.result-container h2 {
+    color: #0044cc;
+}
+
+.result-container p {
+    font-size: 18px;
+}
+
+/* Add these styles to the existing CSS file */
+.alternatives li.correct {
+    background-color: #90EE90;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.alternatives li.incorrect {
+    background-color: #FFB6B6;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0.5;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.explanation {
+    animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Add these styles to the existing CSS file */
+.alternatives li.correct {
+    background-color: #90EE90;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.alternatives li.incorrect {
+    background-color: #FFB6B6;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0.5;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+  .explanation {
+      animation: slideDown 1.5s ease-out; /* Changed from 0.5s to 1.5s */
+  }
+
+  @keyframes slideDown {
+      from {
+          opacity: 0;
+          transform: translateY(-20px);
+      }
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+
+.error-container {
+    text-align: center;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+}
+
+.error-container h1 {
+    color: #ff4444;
+    margin-bottom: 1rem;
+}
+
+.error-container .button {
+    display: inline-block;
+    background-color: #0044cc;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 1rem;
+}
+
+.error-container .button:hover {
+    background-color: #0033aa;
+}
+
+
+.navigation-links {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #0044cc;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #0033aa;
+}
+
+
+
+.score-summary p {
+    font-size: 1.2em;
+    margin: 10px 0;
+    color: #333;
+}
