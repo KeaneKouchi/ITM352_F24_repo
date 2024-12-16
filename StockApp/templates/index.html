@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Stock Information</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Stock Information</h1>
+            
+            <div class="search-container">
+                <div class="favorites-dropdown">
+                    <button class="favorites-toggle">★ Favorites</button>
+                    <div id="favoritesList" class="favorites-content"></div>
+                </div>
+                <div class="search-wrapper">
+                    <input type="text" id="stockSymbol" placeholder="Enter stock symbol (e.g., AAPL)">
+                    <div id="suggestions" class="suggestions-dropdown"></div>
+                </div>
+                <button onclick="getStockInfo()">Get Info</button>
+                <button id="favoriteBtn" onclick="toggleFavorite()" class="favorite-btn">★</button>
+            </div>
+            <div class="customization-panel">
+                <h3>Customize Metrics Display</h3>
+                <div class="font-size-control">
+                    <label>Font Size:</label>
+                    <select id="metricsFont">
+                        <option value="small">Small</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="large">Large</option>
+                    </select>
+                </div>
+                <div class="metrics-toggles">
+                    <label><input type="checkbox" data-target="company" checked> Company Name</label>
+                    <label><input type="checkbox" data-target="symbol" checked> Symbol</label>
+                    <label><input type="checkbox" data-target="currentPrice" checked> Current Price</label>
+                    <label><input type="checkbox" data-target="dayRange" checked> Day Range</label>
+                    <label><input type="checkbox" data-target="weekRange" checked> 52 Week Range</label>
+                    <label><input type="checkbox" data-target="marketCap" checked> Market Cap</label>
+                    <label><input type="checkbox" data-target="volume" checked> Volume</label>
+                    <label><input type="checkbox" data-target="peRatio" checked> P/E Ratio</label>
+                    <label><input type="checkbox" data-target="dividendYield" checked> Dividend Yield</label>
+                    <label><input type="checkbox" data-target="avgVolume" checked> Avg Volume</label>
+                    <label><input type="checkbox" data-target="eps" checked> EPS</label>
+                    <label><input type="checkbox" data-target="beta" checked> Beta</label>
+                    <label><input type="checkbox" data-target="profitMargin" checked> Profit Margin</label>
+                    <label><input type="checkbox" data-target="debtToEquity" checked> Debt/Equity</label>
+                    <label><input type="checkbox" data-target="priceToBook" checked> Price/Book</label>
+                    <label><input type="checkbox" data-target="targetPrice" checked> Target Price</label>
+                </div>
+            </div>            
+            <div id="loading" style="display: none;">Loading...</div>
+            <div id="error" style="display: none;" class="error"></div>
+            
+            <div id="stockInfo" style="display: none;">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">Company:</span>
+                        <span id="company"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Symbol:</span>
+                        <span id="symbol"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Current Price:</span>
+                        <span id="currentPrice"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Day Range:</span>
+                        <span id="dayRange"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">52 Week Range:</span>
+                        <span id="weekRange"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Market Cap:</span>
+                        <span id="marketCap"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Volume:</span>
+                        <span id="volume"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">P/E Ratio:</span>
+                        <span id="peRatio"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Dividend Yield:</span>
+                        <span id="dividendYield"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Avg Volume:</span>
+                        <span id="avgVolume"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">EPS:</span>
+                        <span id="eps"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Beta:</span>
+                        <span id="beta"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Profit Margin:</span>
+                        <span id="profitMargin"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Debt/Equity:</span>
+                        <span id="debtToEquity"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Price/Book:</span>
+                        <span id="priceToBook"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Target Price:</span>
+                        <span id="targetPrice"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Last Updated:</span>
+                        <span id="time"></span>
+                    </div>
+                </div>
+                    </div>
+                    <div class="sentiment-section">
+                        <h2>Social Media Sentiment</h2>
+                        <div id="sentimentChart"></div>
+                        <div class="sentiment-stats">
+                            <div class="stat-item bullish">
+                                <span class="label">Bullish</span>
+                                <span id="bullishCount"></span>
+                            </div>
+                            <div class="stat-item bearish">
+                                <span class="label">Bearish</span>
+                                <span id="bearishCount"></span>
+                            </div>
+                            <div class="stat-item neutral">
+                                <span class="label">Neutral</span>
+                                <span id="neutralCount"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sentiment-section">
+                        <h2>News Sentiment</h2>
+                        <div id="newsSentimentChart"></div>
+                        <div class="sentiment-stats">
+                            <div class="stat-item bullish">
+                                <span class="label">Bullish</span>
+                                <span id="newsBullishCount"></span>
+                            </div>
+                            <div class="stat-item bearish">
+                                <span class="label">Bearish</span>
+                                <span id="newsBearishCount"></span>
+                            </div>
+                            <div class="stat-item neutral">
+                                <span class="label">Neutral</span>
+                                <span id="newsNeutralCount"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-controls">
+                <h2>Historical Data</h2>
+                <select id="timeframe">
+                    <option value="1d">1 Day</option>
+                    <option value="1w">1 Week</option>
+                    <option value="1m">1 Month</option>
+                    <option value="1y">1 Year</option>
+                    <option value="5y">5 Years</option>
+                </select>
+                <div id="stockChart"></div>
+            </div>
+            
+            <div class="comparison-section">
+                <h2>Compare Stocks</h2>
+                <div class="compare-inputs">
+                    <div class="search-wrapper">
+                        <input type="text" id="compareSymbol1" placeholder="Stock 1" class="compare-input">
+                        <div id="suggestions1" class="suggestions-dropdown"></div>
+                    </div>
+                    <div class="search-wrapper">
+                        <input type="text" id="compareSymbol2" placeholder="Stock 2" class="compare-input">
+                        <div id="suggestions2" class="suggestions-dropdown"></div>
+                    </div>
+                    <div class="search-wrapper">
+                        <input type="text" id="compareSymbol3" placeholder="Stock 3" class="compare-input">
+                        <div id="suggestions3" class="suggestions-dropdown"></div>
+                    </div>
+                </div>
+                <select id="compareTimeframe">
+                    <option value="1mo">1 Month</option>
+                    <option value="3mo">3 Months</option>
+                    <option value="1y">1 Year</option>
+                    <option value="5y">5 Years</option>
+                    <option value="10y">10 Years</option>
+                </select>
+                <button onclick="compareStocks()">Compare</button>
+                <div id="compareChart"></div>
+            </div>
+        </div>
+        <script>
+            function getStockInfo() {
+                const symbol = document.getElementById('stockSymbol').value;
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('stockInfo').style.display = 'none';
+                document.getElementById('error').style.display = 'none';
+
+                fetch(`/stock?symbol=${symbol}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.error) {
+                            document.getElementById('loading').style.display = 'none';
+                            document.getElementById('stockInfo').style.display = 'block';
+                            
+                            Object.keys(data).forEach(key => {
+                                const element = document.getElementById(key);
+                                if (element) {
+                                    element.textContent = data[key];
+                                }
+                            });
+                            
+                            updateChart();
+                            updateSentiment();
+                            updateNewsSentiment();
+                        } else {
+                            document.getElementById('error').style.display = 'block';
+                            document.getElementById('error').textContent = data.error;
+                        }
+                    })
+                    .catch(error => {
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('error').style.display = 'block';
+                        document.getElementById('error').textContent = 'Error fetching stock data';
+                    });
+            }
+            function updateChart() {
+                const symbol = document.getElementById('stockSymbol').value;
+                const timeframe = document.getElementById('timeframe').value;
+                
+                fetch(`/historical/${symbol}/${timeframe}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        Plotly.newPlot('stockChart', data.data, data.layout);
+                    });
+            }
+            
+            function compareStocks() {
+                const symbols = [];
+                for (let i = 1; i <= 3; i++) {
+                    const symbol = document.getElementById(`compareSymbol${i}`).value.trim();
+                    if (symbol) {
+                        symbols.push(symbol);
+                    }
+                }
+                
+                if (symbols.length === 0) return;
+                
+                const timeframe = document.getElementById('compareTimeframe').value;
+                
+                fetch(`/compare?symbols=${symbols.join(',')}&timeframe=${timeframe}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        Plotly.newPlot('compareChart', data.data, data.layout);
+                    });
+            }
+
+            function updateSentiment() {
+                const symbol = document.getElementById('stockSymbol').value;
+                fetch(`/social_sentiment/${symbol}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.error) {
+                            const total = data.bullish + data.bearish + data.neutral;
+                            const bullishPercent = (data.bullish / total * 100).toFixed(1);
+                            const bearishPercent = (data.bearish / total * 100).toFixed(1);
+                            const neutralPercent = (data.neutral / total * 100).toFixed(1);
+
+                            const sentimentData = [{
+                                values: [data.bullish, data.bearish, data.neutral],
+                                labels: ['Bullish', 'Bearish', 'Neutral'],
+                                type: 'pie',
+                                marker: {
+                                    colors: ['#2ecc71', '#e74c3c', '#95a5a6']
+                                }
+                            }];
+
+                            const layout = {
+                                title: 'Social Sentiment Distribution',
+                                height: 300,
+                                showlegend: true
+                            };
+
+                            Plotly.newPlot('sentimentChart', sentimentData, layout);
+                        }
+                    });
+            }
+
+            function setupCompareInputSuggestions(inputId, suggestionsId) {
+                const input = document.getElementById(inputId);
+                const suggestionsDiv = document.getElementById(suggestionsId);
+                let debounceTimer;
+
+                input.addEventListener('input', function() {
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(() => {
+                        if (this.value.length > 0) {
+                            fetch(`/suggest?q=${this.value}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    suggestionsDiv.innerHTML = '';
+                                    if (data.length > 0) {
+                                        data.forEach(item => {
+                                            const div = document.createElement('div');
+                                            div.className = 'suggestion-item';
+                                            div.textContent = `${item.symbol} - ${item.name}`;
+                                            div.onclick = () => {
+                                                input.value = item.symbol;
+                                                suggestionsDiv.style.display = 'none';
+                                            };
+                                            suggestionsDiv.appendChild(div);
+                                        });
+                                        suggestionsDiv.style.display = 'block';
+                                    } else {
+                                        suggestionsDiv.style.display = 'none';
+                                    }
+                                });
+                        } else {
+                            suggestionsDiv.style.display = 'none';
+                        }
+                    }, 300);
+                }); 
+            }
+
+            // Setup suggestions for all compare inputs
+            for (let i = 1; i <= 3; i++) {
+                setupCompareInputSuggestions(`compareSymbol${i}`, `suggestions${i}`);
+            }
+
+
+            function updateMetricsVisibility() {
+                document.querySelectorAll('.metrics-toggles input[type="checkbox"]').forEach(checkbox => {
+                    const target = document.getElementById(checkbox.dataset.target).closest('.info-item');
+                    target.classList.toggle('hidden', !checkbox.checked);
+                });
+            }
+
+            function toggleFavorite() {
+                const symbol = document.getElementById('stockSymbol').value;
+                const company = document.getElementById('company').textContent;
+                const btn = document.getElementById('favoriteBtn');
+                
+                if (btn.classList.contains('active')) {
+                    fetch(`/favorites?symbol=${symbol}`, { method: 'DELETE' })
+                        .then(() => {
+                            btn.classList.remove('active');
+                            loadFavorites();
+                        });
+                } else {
+                    fetch('/favorites', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ symbol, name: company })
+                    })
+                        .then(() => {
+                            btn.classList.add('active');
+                            loadFavorites();
+                        });
+                }
+            }
+
+            function loadFavorites() {
+                fetch('/favorites')
+                    .then(response => response.json())
+                    .then(favorites => {
+                        const favoritesList = document.getElementById('favoritesList');
+                        favoritesList.innerHTML = favorites.map(f => `
+                            <div class="favorite-item" onclick="loadFavoriteStock('${f.symbol}')">
+                                <span>${f.symbol} - ${f.name}</span>
+                                <button class="remove-favorite" onclick="event.stopPropagation(); toggleFavorite('${f.symbol}')">✖</button>
+                            </div>
+                        `).join('');
+                    });
+            }
+
+            function loadFavoriteStock(symbol) {
+                document.getElementById('stockSymbol').value = symbol;
+                getStockInfo();
+            }
+
+            // Load favorites when page loads
+            document.addEventListener('DOMContentLoaded', loadFavorites);            
+            function updateSentiment() {
+                const symbol = document.getElementById('stockSymbol').value;
+                fetch(`/stocktwits_sentiment/${symbol}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update the count displays
+                        document.getElementById('bullishCount').textContent = data.bullish;
+                        document.getElementById('bearishCount').textContent = data.bearish;
+                        document.getElementById('neutralCount').textContent = data.neutral;
+
+                        // Create the pie chart
+                        const sentimentData = [{
+                            values: [data.bullish, data.bearish, data.neutral],
+                            labels: ['Bullish', 'Bearish', 'Neutral'],
+                            type: 'pie',
+                            marker: {
+                                colors: ['#2ecc71', '#e74c3c', '#95a5a6']
+                            }
+                        }];
+
+                        const layout = {
+                            title: 'Social Sentiment Distribution',
+                            height: 300,
+                            showlegend: true
+                        };
+
+                        Plotly.newPlot('sentimentChart', sentimentData, layout);
+                    });
+            }            function setupSuggestions() {
+                const input = document.getElementById('stockSymbol');
+                const suggestionsDiv = document.getElementById('suggestions');
+                let debounceTimer;
+
+                input.addEventListener('input', function() {
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(() => {
+                        if (this.value.length > 0) {
+                            fetch(`/suggest?q=${this.value}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    suggestionsDiv.innerHTML = '';
+                                    if (data.length > 0) {
+                                        data.forEach(item => {
+                                            const div = document.createElement('div');
+                                            div.className = 'suggestion-item';
+                                            div.textContent = `${item.symbol} - ${item.name}`;
+                                            div.onclick = () => {
+                                                input.value = item.symbol;
+                                                suggestionsDiv.style.display = 'none';
+                                            };
+                                            suggestionsDiv.appendChild(div);
+                                        });
+                                        suggestionsDiv.style.display = 'block';
+                                    } else {
+                                        suggestionsDiv.style.display = 'none';
+                                    }
+                                });
+                        } else {
+                            suggestionsDiv.style.display = 'none';
+                        }
+                    }, 300);
+                });
+            }
+
+            function updateNewsSentiment() {
+                const symbol = document.getElementById('stockSymbol').value;
+                fetch(`/news_sentiment/${symbol}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update the count displays
+                        document.getElementById('newsBullishCount').textContent = data.bullish + '%';
+                        document.getElementById('newsBearishCount').textContent = data.bearish + '%';
+                        document.getElementById('newsNeutralCount').textContent = data.neutral + '%';
+
+                        // Create the pie chart
+                        const sentimentData = [{
+                            values: [data.bullish, data.bearish, data.neutral],
+                            labels: ['Bullish', 'Bearish', 'Neutral'],
+                            type: 'pie',
+                            marker: {
+                                colors: ['#2ecc71', '#e74c3c', '#95a5a6']
+                            }
+                        }];
+
+                        const layout = {
+                            title: 'News Sentiment Distribution',
+                            height: 300,
+                            showlegend: true
+                        };
+
+                        Plotly.newPlot('newsSentimentChart', sentimentData, layout);
+                    });
+            }
+
+                    // Add event listeners to checkboxes
+                    document.querySelectorAll('.metrics-toggles input[type="checkbox"]').forEach(checkbox => {
+                        checkbox.addEventListener('change', function() {
+                            const targetId = this.dataset.target;
+                            const targetElement = document.getElementById(targetId).closest('.info-item');
+                            targetElement.style.display = this.checked ? 'block' : 'none';
+                        });
+                    });
+
+                    // Call once on page load to set initial state
+                    document.addEventListener('DOMContentLoaded', updateMetricsVisibility);
+
+                    // Setup suggestions for main input
+                    setupSuggestions();
+
+                    document.getElementById('timeframe').addEventListener('change', function() {
+                        updateChart();
+                    });
+
+                    document.getElementById('metricsFont').addEventListener('change', function() {
+                        const size = this.value;
+                        const items = document.querySelectorAll('.info-item');
+                        items.forEach(item => {
+                            item.classList.remove('font-small', 'font-medium', 'font-large');
+                            item.classList.add(`font-${size}`);
+                        });
+                    });
+        </script>
+    </body>
+</html>
+
