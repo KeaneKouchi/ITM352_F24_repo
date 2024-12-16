@@ -7,6 +7,13 @@ from plotly.utils import PlotlyJSONEncoder
 import json
 import requests
 
+## Note on the usage of AI
+## AI was used to create much of the code for this application. I wanted to make something that I thought would be
+## a large challenge even with help from AI. I used Claude 3.5 to implement each feature separately. I don't think
+## it would be appropriate to make up documentation prompts after the fact because in reality I probably reprompted 
+## Claude over 300 times over the course of the weeks. But I want to reiterate that the large majoirty of the program 
+## was coded by Claude, with myself prompting it to fit my exact requirements and combining each part to make each 
+## feature function as part of the overall program.
 
 app = Flask(__name__)
 
